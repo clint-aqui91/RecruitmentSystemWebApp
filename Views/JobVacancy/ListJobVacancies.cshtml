@@ -1,0 +1,109 @@
+﻿@model IEnumerable<RecruitmentSystemWebApplication.Models.JobVacancyModel>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if (User.IsInRole("Recruiter"))
+{
+    ViewData["Title"] = "Manage Your Company's Job Vacancies";
+}
+
+else
+{
+    ViewData["Title"] = "View Job Vacancies";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<body>
+
+    @if (User.IsInRole("Recruiter"))
+    {
+        <h4 class="text-center fw-bolder"> Create A New Job Vacancy </h4>
+
+        <div class="row mt-4">
+            <div class="col text-center">
+                <a asp-area="" asp-controller="JobVacancy" asp-action="CreateJobVacancy" class="btn btn-primary fw-bold">Create Job Vacancy</a>
+            </div>
+        </div>
+
+        <hr />
+    }
+
+    @if (User.IsInRole("Recruiter"))
+    {
+        <h4 class="text-center fw-bolder">Your Company's Current Job Vacancies</h4>
+    }
+
+    else
+    {
+        <h4 class="text-center fw-bolder">Job Vacancies</h4>
+    }
+
+    <!-- If Model (list of Job Vacancies) is empty, display message -->
+    @if (!Model.Any())
+    {
+        <div class="text-center fw-bolder text-danger">No Job Vacancies Exist</div>
+    }
+
+    // <!-- Else (Model contains job vacancies), display each job vacancy in a Bootstrap card and display different buttons with forms depending on the user's role -->
+    else
+    {
+        <div class="row">
+
+            @foreach (var jobVacancy in Model)
+            {
+                <div class="col">
+
+                    <!-- Bootstrap 5 Cards Reference: https://getbootstrap.com/docs/5.0/components/card/ & https://getbootstrap.com/docs/5.0/helpers/stretched-link/ -->
+                    <div class="card" style="width:18rem; height:auto">
+                        <div class="card-title text-center">
+                            <h5>@jobVacancy.JobVacancyTitle </h5>
+                            <!-- Display from base64 encoded string to .png image Reference: https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html -->
+                            <img src="data:image/png;base64,@jobVacancy.CompanyLogoFileBytesToBase64" class="img-thumbnail img-fluid" siz alt="Company Logo">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-text fs-6"> @jobVacancy.CompanyName</div>
+                            <div class="card-text fs-6"> @jobVacancy.OfferedSalaryRangeValue </div>
+                            <div class="card-text fs-6"> @jobVacancy.JobVacancyLocationName </div>
+                            <div class="card-text fs-6"> @jobVacancy.JobVacancyID </div>
+                        </div>
+                        <div class="card-footer text-center">
+
+                            
+                            @if (User.IsInRole("Recruiter"))
+                            {
+                                <form asp-controller="JobVacancy" asp-action="ManageJobVacancy" method="post">
+                                    <!-- Get Job Vacancy ID to be submitted through form -->
+                                    <input type="hidden" id="jobVacancyID" name="jobVacancyID" value="@jobVacancy.JobVacancyID" />
+                                    <input type="submit" value="Manage Job Vacancy" class="btn btn-primary fw-bold" />
+                                </form>
+                            }
+
+                            else if (User.IsInRole("Jobseeker"))
+                            {
+                                <form asp-controller="JobApplication" asp-action="CreateJobApplication" method="get">
+                                    <input type="hidden" id="jobVacancyID" name="jobVacancyID" value="@jobVacancy.JobVacancyID" />
+                                    <input type="submit" value="Apply for Job Vacancy" class="btn btn-primary fw-bold" formmethod="get" />
+                                </form>
+                            }
+
+                            else
+                            {
+                                <form asp-controller="JobVacancy" asp-action="ViewJobVacancy" method="post">
+                                    <input type="hidden" id="jobVacancyID" name="jobVacancyID" value="@jobVacancy.JobVacancyID" />
+                                    <input type="submit" value="View Job Vacancy" class="btn btn-primary fw-bold" />
+                                </form>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</body>

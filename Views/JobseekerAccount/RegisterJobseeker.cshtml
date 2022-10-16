@@ -1,0 +1,78 @@
+﻿@model RecruitmentSystemWebApplication.Models.JobseekerModel
+
+@{
+    ViewData["Title"] = "Register Jobseeker";
+}
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<body>
+    <h4 class="text-center fw-bolder">Enter Jobseeker Details</h4>
+
+    @if (Model.JobseekerRegistrationAlertID == 1)
+    {
+        <div class="alert alert-success">
+            @Model.SuccessfulJobseekerRegistrationMessage
+        </div>
+    }
+
+    @if (Model.JobseekerRegistrationAlertID == 2)
+    {
+        <div class="alert alert-danger">
+            @Model.UnsuccessfulJobseekerRegistrationMessage
+        </div>
+    }
+
+    <div class="row">
+        <form asp-controller="JobseekerAccount" asp-action="RegisterJobseeker" enctype="multipart/form-data" novalidate>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Bootstrap horizontal reference https://www.w3schools.com/bootstrap5/bootstrap_grid_stacked_to_hor.php-->
+            <div class="row form-group mt-3">
+                <label asp-for="JobseekerName" class="form-label fw-bold col-sm"></label>
+                <input asp-for="JobseekerName" placeholder="Enter Jobseeker Name" class="form-control col-sm" />
+                <span asp-validation-for="JobseekerName" class="text-danger col-sm"></span>
+            </div>
+
+            <!-- Bootstrap horizontal reference https://www.w3schools.com/bootstrap5/bootstrap_grid_stacked_to_hor.php-->
+            <div class="row form-group mt-3">
+                <label asp-for="JobseekerSurname" class="form-label fw-bold col-sm"></label>
+                <input asp-for="JobseekerSurname" placeholder="Enter Jobseeker Surname" class="form-control col-sm" />
+                <span asp-validation-for="JobseekerSurname" class="text-danger col-sm"></span>
+            </div>
+
+            <!-- https://getbootstrap.com/docs/5.0/forms/overview/ -->
+            <!-- aria-describedby Reference: https://developer.mozilla.org/en-US/docs/Web/Accessibility -->
+            <div class="form-group row mt-3">
+                <!--<div class="row g-3 align-items-center">-->
+                <label asp-for="JobseekerEmailAddress" class="col-form-label fw-bold col-sm"></label>
+                <input asp-for="JobseekerEmailAddress" placeholder="Enter Jobseeker Email Address" class="form-control col-sm" aria-describedby="contact-email-help" />
+                <span id="contact-email-help" class="form-text col-sm">This Email address will be shown in your job applications and used for sign-in purposes.</span>
+                <span asp-validation-for="JobseekerEmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="JobseekerSignInPassword" class="form-label fw-bold col-sm"></label>
+                <input asp-for="JobseekerSignInPassword" placeholder="Enter Jobseeker Sign-In Password" class="form-control col-sm" />
+                <span asp-validation-for="JobseekerSignInPassword" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="ConfirmPassword" class="form-label fw-bold col-sm"></label>
+                <input asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control col-sm" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger col-sm"></span>
+            </div>
+
+            <!-- https://getbootstrap.com/docs/5.0/components/buttons/ -->
+            <div class="form-group text-center mt-4">
+                <input type="submit" value="Register Jobseeker" class="btn btn-primary fw-bold" />
+            </div>
+        </form>
+    </div>
+</body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

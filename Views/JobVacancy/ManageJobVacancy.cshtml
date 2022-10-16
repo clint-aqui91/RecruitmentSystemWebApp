@@ -1,0 +1,141 @@
+﻿@model RecruitmentSystemWebApplication.Models.JobVacancyModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+
+@{
+    ViewData["Title"] = "Manage Job Vacancy";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<body>
+    <h4 class="text-center fw-bolder">Manage Job Vacancy</h4>
+
+    @if (Model.JobVacancyUpdateAlertID == 1)
+    {
+        <div class="alert alert-success">
+            @Model.SuccessfulJobVacancyUpdateMessage
+        </div>
+    }
+
+    @if (Model.JobVacancyUpdateAlertID == 2)
+    {
+        <div class="alert alert-danger">
+            @Model.UnsuccessfulJobVacancyUpdateMessage
+        </div>
+    }
+
+    @if (Model.JobVacancyDeleteAlertID == 1)
+    {
+        <div class="alert alert-success">
+            @Model.SuccessfulJobVacancyDeleteMessage
+        </div>
+    }
+
+    @if (Model.JobVacancyDeleteAlertID == 2)
+    {
+        <div class="alert alert-danger">
+            @Model.UnsuccessfulJobVacancyDeleteMessage
+        </div>
+    }
+
+    @if (Model.JobVacancyDeleteAlertID == 0)
+    {
+        <div class="row">
+            <form asp-action="UpdateJobVacancy" enctype="multipart/form-data" novalidate>
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <!-- Bootstrap horizontal reference https://www.w3schools.com/bootstrap5/bootstrap_grid_stacked_to_hor.php-->
+                <div class="form-group row mt-3">
+
+                    <label asp-for="JobVacancyTitle" class="form-label fw-bold col-sm"></label>
+                    <input asp-for="JobVacancyTitle" placeholder="Enter Job Vacancy Title" class="form-control col-sm" />
+                    <span asp-validation-for="JobVacancyTitle" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Job Specialization-->
+
+                <div class="form-group row mt-3">
+                    <label asp-for="JobSpecializationID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="JobSpecializationID" asp-items="@(new SelectList(Model.jobSpecializationList, "JobSpecializationID", "JobSpecializationName"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="JobSpecializationID" />
+                    <span asp-validation-for="JobSpecializationID" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Town-->
+                <div class="form-group row mt-3">
+                    <label asp-for="JobVacancyLocationID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="JobVacancyLocationID" asp-items="@(new SelectList(Model.townList, "TownID", "TownName"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="JobVacancyLocationID" />
+                    <span asp-validation-for="JobVacancyLocationID" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Employment Basis Type-->
+                <div class="form-group row mt-3">
+                    <label asp-for="EmploymentBasisTypeID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="EmploymentBasisTypeID" asp-items="@(new SelectList(Model.employmentBasisTypeList, "EmploymentBasisTypeID", "EmploymentBasisTypeName"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="EmploymentBasisTypeID" />
+                    <span asp-validation-for="EmploymentBasisTypeID" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Required Academic Qualification Level-->
+                <div class="form-group row mt-3">
+                    <label asp-for="RequiredAcademicEducationQualificationLevelID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="RequiredAcademicEducationQualificationLevelID" asp-items="@(new SelectList(Model.requiredAcademicEducationQualificationLevelList, "AcademicEducationQualificationLevelID", "AcademicEducationQualificationLevelName"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="RequiredAcademicEducationQualificationLevelID" />
+                    <span asp-validation-for="RequiredAcademicEducationQualificationLevelID" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Required Job Experience-->
+                <div class="form-group row mt-3">
+                    <label asp-for="RequiredYearsOfWorkingExperienceRangeID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="RequiredYearsOfWorkingExperienceRangeID" asp-items="@(new SelectList(Model.requiredYearsOfWorkingExperienceList, "YearsOfExperienceID", "YearsOfExperienceRangeValue"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="RequiredYearsOfWorkingExperienceRangeID" />
+                    <span asp-validation-for="RequiredYearsOfWorkingExperienceRangeID" class="text-danger col-sm"></span>
+                </div>
+
+                <!--Offered Salary Range-->
+                <div class="form-group row mt-3">
+                    <label asp-for="OfferedSalaryRangeID" class="form-label fw-bold col-sm"></label>
+                    <select asp-for="OfferedSalaryRangeID" asp-items="@(new SelectList(Model.offeredSalaryRangeList, "SalaryRangeID", "SalaryRangeValue"))" class="form-control col-sm"></select>
+                    <input type="hidden" asp-for="OfferedSalaryRangeID" />
+                    <span asp-validation-for="OfferedSalaryRangeID" class="text-danger col-sm"></span>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label asp-for="JobVacancyDescription" class="form-label fw-bold col-sm"></label>
+                    <textarea asp-for="JobVacancyDescription" placeholder="Enter Job Vacancy Description" class="form-control col-sm"></textarea>
+                    <span asp-validation-for="JobVacancyDescription" class="text-danger col-sm"></span>
+                </div>
+            </form>
+
+            <form asp-action="DeleteJobVacancy" enctype="multipart/form-data" method="post" novalidate>
+                <!-- https://getbootstrap.com/docs/5.0/components/buttons/ -->
+                <div class="form-group text-center mt-4">
+                    <input type="hidden" asp-for="JobVacancyID" />
+                    <input type="submit" value="Delete Job Vacancy" class="btn btn-danger fw-bold" />
+                </div>
+            </form>
+
+        </div>
+
+        <form asp-controller="JobApplication" asp-action="ListShortlistedJobApplicationsByJobVacancyID" enctype="multipart/form-data" method="post" novalidate>
+            <div class="form-group text-center">
+                <input type="hidden" asp-for="JobVacancyID" />
+                <input type="submit" value="View Short Listed Job Application" class="btn btn-primary fw-bold mt-4" />
+            </div>
+        </form>
+    }
+</body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+

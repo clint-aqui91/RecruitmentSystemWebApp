@@ -1,0 +1,111 @@
+﻿@model RecruitmentSystemWebApplication.Models.CompanyModel
+
+@{
+    ViewData["Title"] = "Register Company";
+}
+<h1>@ViewData["Title"]</h1>
+
+<!--<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>-->
+<!--for bootstrap css see https://getbootstrap.com/docs/4.0/components/forms/-->
+<hr />
+<body>
+    <h4 class="text-center fw-bolder">Enter Company Details</h4>
+
+    @if (Model.CompanyRegistrationAlertID == 1)
+    {
+        <div class="alert alert-success">
+            @Model.SuccessfulCompanyRegistrationMessage
+        </div>
+    }
+
+    @if (Model.CompanyRegistrationAlertID == 2)
+    {
+        <div class="alert alert-danger">
+            @Model.UnsuccessfulCompanyRegistrationMessage
+        </div>
+    }
+
+    <div class="row">
+
+        <form asp-action="RegisterCompany" enctype="multipart/form-data" novalidate>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Bootstrap horizontal reference https://www.w3schools.com/bootstrap5/bootstrap_grid_stacked_to_hor.php-->
+            <div class="form-group row mt-3">
+                <label asp-for="CompanyName" class="form-label fw-bold col-sm"></label>
+                <input asp-for="CompanyName" placeholder="Enter Company Name" class="form-control col-sm" />
+                <span asp-validation-for="CompanyName" class="text-danger col-sm"></span>
+            </div>
+
+            <!-- https://getbootstrap.com/docs/5.0/forms/overview/ -->
+            <!-- aria-describedby Reference: https://developer.mozilla.org/en-US/docs/Web/Accessibility -->
+            <div class="form-group row mt-3">
+                <label asp-for="CompanyContactEmailAddress" class="col-form-label fw-bold col-sm"></label>
+                <input asp-for="CompanyContactEmailAddress" placeholder="Enter Contact Email Address" class="form-control col-sm" aria-describedby="contact-email-help" />
+                <span id="contact-email-help" class="form-text col-sm">This Email address will be posted publicly in job vacancies.</span>
+                <span asp-validation-for="CompanyContactEmailAddress" class="text-danger"></span>
+            </div>
+
+            <!-- https://www.c-sharpcorner.com/article/net-core-5-dropdownlist/ -->
+            <div class="form-group row mt-3">
+                <label asp-for="IndustryID" class="form-label fw-bold col-sm"></label>
+                <select asp-for="IndustryID" asp-items="@(new SelectList(Model.industryList, "IndustryID", "IndustryName"))" class="form-control col-sm"></select>
+                <input type="hidden" asp-for="IndustryID" />
+                <span asp-validation-for="IndustryID" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="TownID" class="form-label fw-bold col-sm"></label>
+                <select asp-for="TownID" asp-items="@(new SelectList(Model.townList, "TownID", "TownName"))" class="form-control col-sm"></select>
+                <input type="hidden" asp-for="TownID" />
+                <span asp-validation-for="TownID" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="CompanySizeID" class="form-label fw-bold col-sm"></label>
+                <select asp-for="CompanySizeID" asp-items="@(new SelectList(Model.companySizeList, "CompanySizeID", "CompanySizeName"))" class="form-control col-sm"></select>
+                <input type="hidden" asp-for="CompanySizeID" />
+                <span asp-validation-for="CompanySizeID" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="CompanyLogoFile" class="form-label fw-bold col-sm"></label>
+                <input asp-for="CompanyLogoFile" class="form-control col-sm" accept="image/png" />
+                <span asp-validation-for="CompanyLogoFile" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="RecruiterSignInEmailAddress" class="col-form-label fw-bold col-sm"></label>
+                <input asp-for="RecruiterSignInEmailAddress" placeholder="Enter Recruiter Sign-In Email Address" class="form-control col-sm" aria-describedby="signin-email-help" />
+                <span id="signin-email-help" class="form-text col-sm">This Email address will be used for sign-in purposes.</span>
+                <span asp-validation-for="RecruiterSignInEmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="RecruiterSignInPassword" class="form-label fw-bold col-sm"></label>
+                <input asp-for="RecruiterSignInPassword" placeholder="Enter Recruiter Sign-In Password" class="form-control col-sm" />
+                <span asp-validation-for="RecruiterSignInPassword" class="text-danger col-sm"></span>
+            </div>
+
+            <div class="form-group row mt-3">
+                <label asp-for="ConfirmPassword" class="form-label fw-bold col-sm"></label>
+                <input asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control col-sm" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger col-sm"></span>
+            </div>
+
+            <!-- https://getbootstrap.com/docs/5.0/components/buttons/ -->
+            <div class="form-group text-center mt-4">
+                <input type="submit" value="Register Company" class="btn btn-primary fw-bold" />
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+

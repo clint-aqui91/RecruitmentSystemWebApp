@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="">
+            You're Logged In as @User.Identity?.Name
+        </li>
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Log Out</a>
+        </li>
+    }
+
+    else
+    {
+        // Format - asp-controller = Controller Name (name of .cs file for controller), asp-action = Action of controller action/method must be matching with .cshtml file for view
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="RegisterCompany" asp-action="RegisterCompany">Register Company</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="JobseekerAccount" asp-action="RegisterJobseeker">Register Jobseeker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login"> Log In</a>
+        </li>
+    }
+</ul>

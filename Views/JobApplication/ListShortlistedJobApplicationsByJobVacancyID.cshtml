@@ -1,0 +1,63 @@
+﻿@model IEnumerable<RecruitmentSystemWebApplication.Models.JobApplicationModel>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "View Shortlisted Job Applications";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<body>
+    <h4 class="text-center fw-bolder">Job Applications</h4>
+    <!-- If Model (list of Job Applications By Job Vacancy) is empty, display message -->
+    @if (!Model.Any())
+    {
+        <div class="text-center fw-bolder text-danger">No Shortlisted Job Applications for the selected Job Vacancy Exist</div>
+    }
+
+    else
+    {
+        @foreach (var jobApplication in Model)
+        {
+            <div class="text-center fw-bolder">Job Vacancy Details</div>
+
+            <div class="row">
+                <div class="form-group row">
+                    <label asp-for="@jobApplication.JobseekerName" class="label fw-bold col-sm"></label>
+                    <input type="text" readonly asp-for="@jobApplication.JobseekerName" class="form-control-plaintext col-sm">
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="@jobApplication.JobseekerSurname" class="label fw-bold col-sm"></label>
+                    <input type="text" readonly asp-for="@jobApplication.JobseekerSurname" class="form-control-plaintext col-sm">
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="@jobApplication.JobseekerContactEmailAddress" class="label fw-bold col-sm"></label>
+                    <input type="text" readonly asp-for="@jobApplication.JobseekerContactEmailAddress" class="form-control-plaintext col-sm">
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="@jobApplication.JobApplicationCoveringLetter" class="label fw-bold col-sm"></label>
+                    <textarea asp-for="@jobApplication.JobApplicationCoveringLetter" readonly class="form-control col-sm" rows="10"></textarea>
+
+                </div>
+
+                <div class="form-group text-center mt-4">
+                    <form asp-controller="FileDownloader" asp-action="DownloadCVFile" method="post">
+                        <input type="hidden" id="JobApplicationID" name="JobApplicationID" value="@jobApplication.JobApplicationID" />
+                        <input type="submit" value="Download CV" class="btn btn-primary fw-bold" />
+                    </form>
+                </div>
+
+            </div>
+            <hr />
+        }
+    }
+
+</body>
